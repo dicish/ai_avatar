@@ -11,21 +11,20 @@ text = st.text_input("Введите сообщение для озвучки:")
 
 
 def validate_image(image_path):
-    """Проверяем и исправляем изображение перед обработкой"""
     try:
         img = cv2.imread(image_path)
         if img is None:
             raise ValueError("Не удалось загрузить изображение")
 
-        # Конвертируем в RGB, если нужно
-        if len(img.shape) == 2:  # Градации серого
+       
+        if len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-        elif img.shape[2] == 4:  # С альфа-каналом
+        elif img.shape[2] == 4:
             img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
         else:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-        # Сохраняем исправленное изображение
+        
         fixed_path = os.path.join(os.path.dirname(image_path), "fixed_" + os.path.basename(image_path))
         Image.fromarray(img).save(fixed_path)
         return fixed_path
@@ -56,10 +55,10 @@ def text_to_speech(text, output_path='output.wav'):
 
 def animate_with_sadtalker(image_path, audio_path, server_url="http://127.0.0.1:7860/"):
     client = Client(server_url)
-    time.sleep(10)  # Ждём инициализации сервера
+    time.sleep(10)
 
     try:
-        # Параметры SadTalker
+        
         result = client.predict(
             image_path,
             audio_path,
